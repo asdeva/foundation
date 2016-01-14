@@ -33,7 +33,7 @@ class BasicInstrument: NSObject, CsoundInstrument
         return nil
     }
     
-    func delete(note note: PlainNote) {
+    func deleteNote(note: PlainNote) {
         if let note = note as? BasicNote,
            i = csdLinks.indexOf({$0.note === note}) {
             note.sounding = false
@@ -53,6 +53,11 @@ class BasicInstrument: NSObject, CsoundInstrument
             csdLinks[idInCsd].volChannel =
                 csoundObj.getInputChannelPtr("vol.\(idInCsd)",
                     channelType: CSOUND_CONTROL_CHANNEL)
+            
+            csdLinks[idInCsd].vibChannel =
+                csoundObj.getInputChannelPtr("vib.\(idInCsd)",
+                    channelType: CSOUND_CONTROL_CHANNEL)
+
         }
     }
     
@@ -62,6 +67,7 @@ class BasicInstrument: NSObject, CsoundInstrument
         for var csdLink in csdLinks {
             csdLink.frqChannel = nil
             csdLink.volChannel = nil
+            csdLink.vibChannel = nil
         }
 
     }
@@ -101,6 +107,7 @@ class BasicInstrument: NSObject, CsoundInstrument
         }
         var hertz: Float = 0
         var volume: Float = 0
+        var vibrato: Float = 0
         var idInCsd: Int = 0
     }
     
@@ -108,15 +115,18 @@ class BasicInstrument: NSObject, CsoundInstrument
     struct CsdLink {
         var frqChannel : UnsafeMutablePointer<Float>! = nil
         var volChannel : UnsafeMutablePointer<Float>! = nil
+        var vibChannel : UnsafeMutablePointer<Float>! = nil
         var idInCsd = 0
         var note : BasicNote? = nil
         func updateChannels () {
             if let note = note {
                 frqChannel.memory = note.hertz
                 volChannel.memory = note.volume
+                vibChannel.memory = note.vibrato
             } else {
                 frqChannel.memory = 0
                 volChannel.memory = 0
+                vibChannel.memory = 0
             }
         }
     }

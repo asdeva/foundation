@@ -11,7 +11,7 @@ import Foundation
 protocol Instrument {
     typealias Note
     func newNote() -> Note?
-    func delete(note note: Note) -> ()
+    func deleteNote(note: Note) -> ()
 }
 
 
