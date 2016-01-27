@@ -9,7 +9,7 @@
 import Foundation
 
 
-class BasicInstrument: NSObject, CsoundInstrument
+class BasicInstrument: NSObject, CsoundInstrument 
 {
     var csound: CsoundObj
     
