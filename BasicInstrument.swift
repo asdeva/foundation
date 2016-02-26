@@ -17,7 +17,8 @@ class BasicInstrument: NSObject, CsoundInstrument
         csound = csound_
         super.init()
         if let mb: NSBundle = NSBundle.mainBundle(),
-            tempFile: String? = mb.pathForResource(csd, ofType: "csd") {            csound.addBinding(self)
+            tempFile: String? = mb.pathForResource(csd, ofType: "csd") {
+                csound.addBinding(self)
                 csound.play(tempFile)
         } else {
             return nil
@@ -90,10 +91,10 @@ class BasicInstrument: NSObject, CsoundInstrument
             idInCsd = idInCsd_
         }
         var instrument: BasicInstrument
-        var _sounding: Bool? = nil
+        var _sounding: Bool = false
         var sounding: Bool {
             get {
-                return _sounding ?? false
+                return _sounding
             }
             set {
                 guard _sounding != newValue else {return}
