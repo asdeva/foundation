@@ -20,6 +20,10 @@ class BasicInstrument: NSObject, CsoundInstrument
             tempFile: String? = mb.pathForResource(csd, ofType: "csd") {
                 csound.addBinding(self)
                 csound.play(tempFile)
+                for idInCsd in 0..<csdLinks.count {
+                    csdLinks[idInCsd].idInCsd = idInCsd
+                }
+                
         } else {
             return nil
         }
@@ -44,8 +48,6 @@ class BasicInstrument: NSObject, CsoundInstrument
     
     func setup(csoundObj: CsoundObj) {
         for idInCsd in 0..<csdLinks.count {
-            
-            csdLinks[idInCsd].idInCsd = idInCsd
             
             csdLinks[idInCsd].frqChannel =
                 csoundObj.getInputChannelPtr("freq.\(idInCsd)",
@@ -132,7 +134,7 @@ class BasicInstrument: NSObject, CsoundInstrument
         }
     }
     
-    var csdLinks = [CsdLink](count: 10, repeatedValue: CsdLink())
+    var csdLinks = [CsdLink](count: 50, repeatedValue: CsdLink())
     
     
 }
