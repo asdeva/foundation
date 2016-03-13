@@ -13,6 +13,7 @@ class BasicInstrument: NSObject, CsoundInstrument
 {
     var csound: CsoundObj
     
+    
     init?(csd: String, csound csound_: CsoundObj) {
         csound = csound_
         super.init()
@@ -116,6 +117,8 @@ class BasicInstrument: NSObject, CsoundInstrument
     
     
     struct CsdLink {
+        var avg: Interpolator = Interpolator(coeff: 0.0001)
+
         var frqChannel : UnsafeMutablePointer<Float>! = nil
         var volChannel : UnsafeMutablePointer<Float>! = nil
         var vibChannel : UnsafeMutablePointer<Float>! = nil
@@ -124,7 +127,7 @@ class BasicInstrument: NSObject, CsoundInstrument
         func updateChannels () {
             if let note = note {
                 frqChannel.memory = note.hertz
-                volChannel.memory = note.volume
+                volChannel.memory = Float(avg.addSample(Double(note.volume)))
                 vibChannel.memory = note.vibrato
             } else {
                 frqChannel.memory = 0
@@ -134,7 +137,7 @@ class BasicInstrument: NSObject, CsoundInstrument
         }
     }
     
-    var csdLinks = [CsdLink](count: 50, repeatedValue: CsdLink())
+    var csdLinks = [CsdLink](count: 60, repeatedValue: CsdLink())
     
     
 }
